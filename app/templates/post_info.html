@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+
+<div class="panel panel-primary">
+    <table class="table table-hover">
+        <tr>
+            <td width="70px">
+                <a href="{{ url_for('user', username=post.author.username) }}" >
+                    <img src="{{ post.author.avatar(120) }}" class="img-circle">
+                </a>
+            </td>
+            <td>
+                <a href="{{ url_for('user', username=post.author.username) }}"><big><big><big><big>
+                    {{ post.author.username }}
+                </a>
+                said {{ moment(post.timestamp).fromNow() }}:
+                </big></big></big></big><br><big><big>
+                {{ post.body }}
+            </big></big></td>
+        </tr>
+    </table>
+</div>
+
+    <div class="col-md-7">
+        {{ wtf.quick_form(form) }}<br><br><h2>Answers:</h2>
+    </div>
+
+    <div>
+    {% for answer in answers %}
+        {% include '_answer.html' %}
+    {% endfor %}
+    </div>
+{% endblock %}

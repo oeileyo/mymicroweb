@@ -4,8 +4,8 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
-    ResetPasswordRequestForm, ResetPasswordForm
-from app.models import User, Post
+    ResetPasswordRequestForm, ResetPasswordForm, AnsForm
+from app.models import User, Post, Answer
 from app.email import send_password_reset_email
 
 
@@ -184,3 +184,21 @@ def unfollow(username):
     db.session.commit()
     flash('You are not following {}.'.format(username))
     return redirect(url_for('user', username=username))
+
+
+@app.route('/post_info/<q_id>', methods=['GET', 'POST'])
+@login_required
+def post_info(q_id):
+    form = AnsForm()
+    page = request.args.get('page', 1, type=int)
+    post = Post.query.filter_by(id=q_id).first()
+    if form.validate_on_submit():
+        answer = Answer(body=form.answer.data, author=current_user, post=post)
+        db.session.add(answer)
+        db.session.commit()
+        flash(('Your answer is very good, bro!'))
+        return redirect(url_for('post_info', q_id=q_id))
+    answers = Answer.query.filter_by(q_id=q_id).order_by(Answer.timestamp.desc())
+    return render_template('post_info.html', answers = answers, form = form, post = post)
+
+

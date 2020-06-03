@@ -1,4 +1,5 @@
-<table class="table table-hover">
+<div class="panel panel-primary">
+    <table class="table table-hover" style="background-color:#FAFAFF">
         <tr>
             <td width="70px">
                 <a href="{{ url_for('user', username=post.author.username) }}">
@@ -6,12 +7,16 @@
                 </a>
             </td>
             <td>
-                <a href="{{ url_for('user', username=post.author.username) }}">
+                <a href="{{ url_for('user', username=post.author.username) }}"><big><big>
                     {{ post.author.username }}
                 </a>
                 said {{ moment(post.timestamp).fromNow() }}:
-                <br>
-                {{ post.body }}
+                </big></big><br>
+                <a href="{{url_for('post_info', q_id = post.id)}}"> {{post.body}}</a>
+                <br><br>
+                <p><small>amount of answers: {{post.answers.count() }}</small></p>
             </td>
+
         </tr>
     </table>
+</div>

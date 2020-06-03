@@ -1,0 +1,18 @@
+
+    <table class="table table-hover" style="color:#0B0B61">
+        <tr>
+            <td width="70px">
+                <a href="{{ url_for('user', username=answer.author.username) }}">
+                    <img src="{{ answer.author.avatar(70) }}" />
+                </a>
+            </td>
+            <td><big><big>
+                <a href="{{ url_for('user', username=answer.author.username) }}">
+                    {{ answer.author.username }}
+                </a>
+                said {{ moment(answer.timestamp).fromNow() }}:
+                </big></big><br>
+                <p> {{answer.body}}</p>
+            </td>
+        </tr>
+    </table>
